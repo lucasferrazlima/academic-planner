@@ -1,7 +1,9 @@
 import React, { useState } from 'react';
+import { useRouter } from 'next/router';
 
 function TasksPage() {
   const [tasks, setTasks] = useState([]);
+  const router = useRouter();
 
   const handleNewTask = (e) => {
     e.preventDefault(); // prevent page refresh
@@ -15,6 +17,10 @@ function TasksPage() {
     setTasks(newTasks);
   };
 
+  const handleEditTask = (taskId) => {
+    router.push(`/test/${taskId}`);
+  };
+
   return (
     <div>
       <h1>Tasks Page</h1>
@@ -24,9 +30,10 @@ function TasksPage() {
       </form>
       <ul>
         {tasks.map((task, index) => (
-          <div>
-            <li key={task}>{task}</li>
-            <button type="submit" onClick={() => handleDeleteTask(index)}>Delete Task</button>
+          <div key={task}>
+            <li>{task}</li>
+            <button type="button" onClick={() => handleDeleteTask(index)}>Delete Task</button>
+            <button type="button">Edit Task</button>
           </div>
         ))}
       </ul>

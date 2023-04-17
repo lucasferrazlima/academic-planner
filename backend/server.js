@@ -1,6 +1,6 @@
-const express = require('express');
+require('dotenv').config({ path: '../.env' });
 
-const app = express();
+const app = require('./app');
 
 app.get('/', (request, response) => {
   response.send('Hello World!');
