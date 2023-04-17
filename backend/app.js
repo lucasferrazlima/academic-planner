@@ -4,6 +4,7 @@ const app = express();
 const mongoose = require('mongoose');
 
 const tasksRouter = require('./controllers/tasks');
+const usersRouter = require('./controllers/users');
 
 mongoose.set('strictQuery', false);
 
@@ -15,5 +16,6 @@ app.use(express.json());
 app.use(express.static('build'));
 
 app.use('/api/tasks', tasksRouter);
+app.use('/api/users', usersRouter);
 
 module.exports = app;
