@@ -1,10 +1,11 @@
 const tasksRouter = require('express').Router();
 const Task = require('../models/Task');
+const jwtMiddleware = require('../utils/jwtMiddleware');
 
 // get all tasks
 tasksRouter.get('/', async (req, res) => {
   try {
-    const tasks = await Task.find({});
+    const tasks = await Task.find({ user: req.user.id });
     res.status(200).json(tasks);
   } catch (error) {
     res.status(500).json({ message: error.message });
@@ -26,17 +27,19 @@ tasksRouter.get('/:id', async (req, res) => {
 
 // create a new task
 tasksRouter.post('/', async (req, res) => {
-  const task = new Task({
-    title: req.body.title,
-    description: req.body.description,
-    completed: req.body.completed,
-  });
-
   try {
+    const task = new Task({
+      title: req.body.title,
+      description: req.body.description,
+      completed: req.body.completed,
+      user: req.user.id,
+    });
+
     const newTask = await task.save();
     res.status(201).json(newTask);
   } catch (error) {
-    res.status(400).json({ message: error.message });
+    console.error(error);
+    res.status(400).json({ message: 'Failed to create task' });
   }
 });
 

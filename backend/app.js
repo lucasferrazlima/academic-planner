@@ -1,4 +1,5 @@
 const express = require('express');
+const jwtMiddleware = require('./utils/jwtMiddleware');
 
 const app = express();
 const mongoose = require('mongoose');
@@ -15,6 +16,7 @@ mongoose.connect(process.env.MONGO_URL)
 
 app.use(express.json());
 app.use(express.static('build'));
+app.use(jwtMiddleware);
 
 app.use('/api/tasks', tasksRouter);
 app.use('/api/users', usersRouter);
