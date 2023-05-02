@@ -5,6 +5,7 @@ import {
   Button, TextField, List, ListItem, ListItemText, ListItemSecondaryAction, IconButton, Typography,
 } from '@mui/material';
 import DeleteIcon from '@mui/icons-material/Delete';
+import EventIcon from '@mui/icons-material/Event';
 
 const baseUrl = 'http://localhost:3001/api';
 
@@ -38,16 +39,45 @@ function TasksPage() {
     fetchTasks();
   }, [token]);
 
-  const handleNewTask = (e) => {
+  const handleNewTask = async (e) => {
     e.preventDefault(); // prevent page refresh
-    setTasks([...tasks, e.target.task.value]); // add new task to tasks
-    e.target.reset();
+    const newTask = {
+      title: e.target.title.value,
+      description: e.target.description.value,
+      dueDate: e.target.dueDate.value,
+    };
+
+    try {
+      const res = await fetch(`${baseUrl}/tasks`, {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+          Authorization: `Bearer ${token}`,
+        },
+        body: JSON.stringify(newTask),
+      });
+      const data = await res.json();
+      console.log(data);
+      setTasks([...tasks, data]);
+    } catch (error) {
+      console.error(error);
+    }
   };
 
-  const handleDeleteTask = (index) => {
-    const newTasks = [...tasks];
-    newTasks.splice(index, 1); // remove 1 item at index
-    setTasks(newTasks);
+  const handleDeleteTask = async (id) => {
+    try {
+      const res = await fetch(`${baseUrl}/tasks/${id}`, {
+        method: 'DELETE',
+        headers: {
+          'Content-Type': 'application/json',
+          Authorization: `Bearer ${token}`,
+        },
+      });
+      const newTasks = tasks.filter((task) => task._id !== id);
+      setTasks(newTasks);
+    } catch (error) {
+      console.error(error);
+    }
   };
 
   const handleEditTask = (taskId) => {
@@ -60,20 +90,55 @@ function TasksPage() {
       <form onSubmit={handleNewTask}>
         <TextField
           variant="outlined"
-          name="task"
-          id="task"
-          placeholder="Add task"
+          name="title"
+          id="title"
+          placeholder="Task title"
           size="small"
           fullWidth
         />
-        <Button type="submit" variant="contained" color="primary" sx={{ mt: 1 }}>Create Task</Button>
+        <TextField
+          variant="outlined"
+          name="description"
+          id="description"
+          placeholder="Task description"
+          size="small"
+          fullWidth
+        />
+        <TextField
+          variant="outlined"
+          name="dueDate"
+          id="dueDate"
+          type="date"
+          placeholder="Due date"
+          size="small"
+          fullWidth
+        />
+        <Button type="submit" color="primary" sx={{ mt: 1 }}>Create Task</Button>
       </form>
       <List sx={{ mt: 2 }}>
         {tasks.map((task) => (
-          <ListItem key={task.id}>
-            <ListItemText primary={task.title} secondary={task.description} />
+          <ListItem key={task._id}>
+            <ListItemText
+              primary={task.title}
+              secondary={(
+                <>
+                  {task.description}
+                  {task.dueDate
+                    ? (
+                      <span style={{
+                        display: 'flex', alignItems: 'center', gap: '4px', paddingTop: '5px',
+                      }}
+                      >
+                        <EventIcon />
+                        {new Date(task.dueDate).toLocaleDateString('pt-BR')}
+                      </span>
+                    )
+                    : null}
+                </>
+              )}
+            />
             <ListItemSecondaryAction>
-              <IconButton edge="end" aria-label="delete" onClick={() => handleDeleteTask(index)}>
+              <IconButton edge="end" aria-label="delete" onClick={() => handleDeleteTask(task._id)}>
                 <DeleteIcon />
               </IconButton>
             </ListItemSecondaryAction>
