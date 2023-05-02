@@ -14,6 +14,8 @@ const jwtMiddleware = async (req, res, next) => {
       return res.status(401).json({ message: 'Invalid authorization token' });
     }
     req.user = user;
+    console.log(decodedToken);
+    console.log(user);
     next();
   } catch (error) {
     res.status(401).json({ message: error.message });

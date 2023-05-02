@@ -1,11 +1,10 @@
 const tasksRouter = require('express').Router();
 const Task = require('../models/Task');
-const jwtMiddleware = require('../utils/jwtMiddleware');
 
 // get all tasks
 tasksRouter.get('/', async (req, res) => {
   try {
-    const tasks = await Task.find({ user: req.user.id });
+    const tasks = await Task.find({ user: req.user.id }).populate('user', 'username');
     res.status(200).json(tasks);
   } catch (error) {
     res.status(500).json({ message: error.message });
@@ -33,6 +32,7 @@ tasksRouter.post('/', async (req, res) => {
       description: req.body.description,
       completed: req.body.completed,
       user: req.user.id,
+      dueDate: req.body.dueDate,
     });
 
     const newTask = await task.save();

@@ -1,5 +1,6 @@
 const express = require('express');
 const jwtMiddleware = require('./utils/jwtMiddleware');
+const cors = require('cors');
 
 const app = express();
 const mongoose = require('mongoose');
@@ -16,10 +17,11 @@ mongoose.connect(process.env.MONGO_URL)
 
 app.use(express.json());
 app.use(express.static('build'));
-app.use(jwtMiddleware);
+app.use(cors());
 
+app.use('/api/login', loginRouter); // login route does not require jwtMiddleware
+app.use(jwtMiddleware);
 app.use('/api/tasks', tasksRouter);
 app.use('/api/users', usersRouter);
-app.use('/api/login', loginRouter);
 
 module.exports = app;
