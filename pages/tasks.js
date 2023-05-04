@@ -2,7 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { useRouter } from 'next/router';
 import jwt from 'jsonwebtoken';
 import {
-  Button, TextField, List, ListItem, ListItemText, ListItemSecondaryAction, IconButton, Typography,
+  Button, Checkbox, TextField, List, ListItem, ListItemText, ListItemSecondaryAction, IconButton, Typography,
 } from '@mui/material';
 import DeleteIcon from '@mui/icons-material/Delete';
 import EventIcon from '@mui/icons-material/Event';
@@ -13,6 +13,7 @@ function TasksPage() {
   const [tasks, setTasks] = useState([]);
   const router = useRouter();
   const [token, setToken] = useState(null);
+  const [completeTasks, setCompleteTasks] = useState([]);
 
   useEffect(() => {
     const tokenUser = localStorage.getItem('token');
@@ -30,7 +31,11 @@ function TasksPage() {
           },
         });
         const data = await res.json();
-        setTasks(data);
+        console.log(data);
+        const incompleteTasks = data.filter((task) => !task.completed);
+        const completeTasks = data.filter((task) => task.completed);
+        setTasks(incompleteTasks);
+        setCompleteTasks(completeTasks);
       } catch (error) {
         console.error(error);
       }
@@ -84,40 +89,85 @@ function TasksPage() {
     router.push(`/test/${taskId}`);
   };
 
+  const handleCheckTask = async (task) => {
+    try {
+      const res = await fetch(`${baseUrl}/tasks/${task._id}`, {
+        method: 'PUT',
+        headers: {
+          'Content-Type': 'application/json',
+          Authorization: `Bearer ${token}`,
+        },
+        body: JSON.stringify({ ...task, completed: true }),
+      });
+      const data = await res.json();
+      const newTasks = tasks.filter((task) => task._id !== data._id);
+      setTasks(newTasks);
+      setCompleteTasks([...completeTasks, data]);
+    } catch (error) {
+      console.error(error);
+    }
+  };
+
+  const handleUncheckTask = async (task) => {
+    try {
+      const res = await fetch(`${baseUrl}/tasks/${task._id}`, {
+        method: 'PUT',
+        headers: {
+          'Content-Type': 'application/json',
+          Authorization: `Bearer ${token}`,
+        },
+        body: JSON.stringify({ ...task, completed: false }),
+      });
+      const data = await res.json();
+      const newTasks = completeTasks.filter((task) => task._id !== data._id);
+      setCompleteTasks(newTasks);
+      setTasks([...tasks, data]);
+    } catch (error) {
+      console.error(error);
+    }
+  };
+
   return (
     <div>
       <Typography variant="h4" component="h1" gutterBottom>My tasks</Typography>
-      <form onSubmit={handleNewTask}>
+      <form
+        onSubmit={handleNewTask}
+        style={{
+          display: 'flex', flexDirection: 'column', gap: '5px', maxWidth: '80%', margin: '0 auto',
+        }}
+      >
         <TextField
-          variant="outlined"
+          variant="standard"
           name="title"
           id="title"
-          placeholder="Task title"
+          label="Title"
+          required
           size="small"
-          fullWidth
         />
         <TextField
-          variant="outlined"
+          variant="standard"
           name="description"
           id="description"
-          placeholder="Task description"
+          label="Description"
+          multiline
           size="small"
-          fullWidth
+
         />
         <TextField
-          variant="outlined"
+          variant="standard"
           name="dueDate"
           id="dueDate"
           type="date"
-          placeholder="Due date"
+          label="Due date"
           size="small"
-          fullWidth
+          InputLabelProps={{ shrink: true }}
         />
-        <Button type="submit" color="primary" sx={{ mt: 1 }}>Create Task</Button>
+        <Button type="submit" color="primary" variant="contained" sx={{ mt: 1 }}>Create Task</Button>
       </form>
       <List sx={{ mt: 2 }}>
         {tasks.map((task) => (
           <ListItem key={task._id}>
+            <Checkbox onChange={() => handleCheckTask(task)} />
             <ListItemText
               primary={task.title}
               secondary={(
@@ -136,6 +186,39 @@ function TasksPage() {
                     : null}
                 </>
               )}
+            />
+            <ListItemSecondaryAction>
+              <IconButton edge="end" aria-label="delete" onClick={() => handleDeleteTask(task._id)}>
+                <DeleteIcon />
+              </IconButton>
+            </ListItemSecondaryAction>
+          </ListItem>
+        ))}
+      </List>
+      <Typography variant="h5" component="h1" gutterBottom>Completed tasks</Typography>
+      <List sx={{ mt: 2 }}>
+        {completeTasks.map((task) => (
+          <ListItem key={task._id}>
+            <Checkbox checked onChange={() => handleUncheckTask(task)} />
+            <ListItemText
+              primary={task.title}
+              secondary={(
+                <>
+                  {task.description}
+                  {task.dueDate
+                    ? (
+                      <span style={{
+                        display: 'flex', alignItems: 'center', gap: '4px', paddingTop: '5px',
+                      }}
+                      >
+                        <EventIcon />
+                        {new Date(task.dueDate).toLocaleDateString('pt-BR')}
+                      </span>
+                    )
+                    : null}
+                </>
+            )}
+              style={{ textDecoration: 'line-through' }}
             />
             <ListItemSecondaryAction>
               <IconButton edge="end" aria-label="delete" onClick={() => handleDeleteTask(task._id)}>
