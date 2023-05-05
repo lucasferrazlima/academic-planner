@@ -6,6 +6,8 @@ import {
 } from '@mui/material';
 import DeleteIcon from '@mui/icons-material/Delete';
 import EventIcon from '@mui/icons-material/Event';
+import EditIcon from '@mui/icons-material/Edit';
+import CustomDrawer from '../components/sidebar';
 
 const baseUrl = 'http://localhost:3001/api';
 
@@ -52,6 +54,8 @@ function TasksPage() {
       dueDate: e.target.dueDate.value,
     };
 
+    console.log(newTask);
+
     try {
       const res = await fetch(`${baseUrl}/tasks`, {
         method: 'POST',
@@ -86,7 +90,7 @@ function TasksPage() {
   };
 
   const handleEditTask = (taskId) => {
-    router.push(`/test/${taskId}`);
+    router.push(`/tasks/${taskId}`);
   };
 
   const handleCheckTask = async (task) => {
@@ -130,6 +134,7 @@ function TasksPage() {
   return (
     <div>
       <Typography variant="h4" component="h1" gutterBottom>My tasks</Typography>
+      <CustomDrawer router={router} />
       <form
         onSubmit={handleNewTask}
         style={{
@@ -161,6 +166,7 @@ function TasksPage() {
           label="Due date"
           size="small"
           InputLabelProps={{ shrink: true }}
+          format="DD-MM-YYYY"
         />
         <Button type="submit" color="primary" variant="contained" sx={{ mt: 1 }}>Create Task</Button>
       </form>
@@ -180,7 +186,7 @@ function TasksPage() {
                       }}
                       >
                         <EventIcon />
-                        {new Date(task.dueDate).toLocaleDateString('pt-BR')}
+                        {new Date(task.dueDate).toLocaleDateString()}
                       </span>
                     )
                     : null}
@@ -188,6 +194,9 @@ function TasksPage() {
               )}
             />
             <ListItemSecondaryAction>
+              <IconButton edge="end" aria-label="edit" onClick={() => handleEditTask(task._id)}>
+                <EditIcon />
+              </IconButton>
               <IconButton edge="end" aria-label="delete" onClick={() => handleDeleteTask(task._id)}>
                 <DeleteIcon />
               </IconButton>

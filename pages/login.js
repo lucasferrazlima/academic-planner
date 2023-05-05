@@ -1,4 +1,5 @@
 import React, { useState } from 'react';
+import router from 'next/router';
 
 const baseUrl = 'http://localhost:3001/api';
 
@@ -15,9 +16,11 @@ function LoginPage() {
         headers: { 'Content-Type': 'application/json' },
       });
       const data = await res.json();
-      console.log(data);
       localStorage.setItem('token', data.token);
-      console.log(localStorage);
+
+      if (res.status === 200) {
+        router.push('/tasks');
+      }
     } catch (error) {
       console.error(error);
     }
