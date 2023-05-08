@@ -7,7 +7,6 @@ import {
 import DeleteIcon from '@mui/icons-material/Delete';
 import EventIcon from '@mui/icons-material/Event';
 import EditIcon from '@mui/icons-material/Edit';
-import CustomDrawer from '../components/sidebar';
 
 const baseUrl = 'http://localhost:3001/api';
 
@@ -134,7 +133,6 @@ function TasksPage() {
   return (
     <div>
       <Typography variant="h4" component="h1" gutterBottom>My tasks</Typography>
-      <CustomDrawer router={router} />
       <form
         onSubmit={handleNewTask}
         style={{
