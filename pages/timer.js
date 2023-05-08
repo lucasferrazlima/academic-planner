@@ -4,29 +4,26 @@ import Button from '@mui/material/Button';
 import TextField from '@mui/material/TextField';
 import Typography from '@mui/material/Typography';
 import { useRouter } from 'next/router';
+import SettingsApplicationsIcon from '@mui/icons-material/SettingsApplications';
 import CustomDrawer from '../components/sidebar';
+import TimerSettings from '../components/timerSettings';
 
 function TimerPage() {
   const router = useRouter();
   const [rounds, setRounds] = useState(4); // number of rounds in a session
   const [focusTime, setFocusTime] = useState(25); // focus time of the timer in minutes
   const [breakTime, setBreakTime] = useState(5); // break time of the timer in minutes
-
   const [timer, setTimer] = useState(focusTime * 60); // timer in seconds
-
   const [timerOn, setTimerOn] = useState(false); // timer on/off
   const [timerMode, setTimerMode] = useState('focus'); // timer mode: focus/break
-
   const [roundsLeft, setRoundsLeft] = useState(rounds); // rounds left in the session
   const [focusTimeLeft, setFocusTimeLeft] = useState(focusTime * 60); // focus time left in seconds
   const [breakTimeLeft, setBreakTimeLeft] = useState(breakTime * 60); // break time left in seconds
-
   const [timerText, setTimerText] = useState(''); // text to display on the timer
   const [timerColor, setTimerColor] = useState(''); // color of the timer text
-
   const [sessionComplete, setSessionComplete] = useState(false); // session complete flag
 
-  const [sessionHistory, setSessionHistory] = useState([]); // session history
+  const [showSettings, setShowSettings] = useState(false);
 
   const [token, setToken] = useState(null);
 
@@ -42,6 +39,14 @@ function TimerPage() {
   const handlePause = () => {
     setTimerOn(false);
   };
+
+  // handle when values are changed in settings
+  useEffect(() => {
+    setTimer(focusTime * 60);
+    setFocusTimeLeft(focusTime * 60);
+    setBreakTimeLeft(breakTime * 60);
+    setRoundsLeft(rounds);
+  }, [focusTime, breakTime, rounds]);
 
   useEffect(() => {
     if (timerOn) {
@@ -85,6 +90,10 @@ function TimerPage() {
     }
   }, [timerOn, timerMode, focusTimeLeft, breakTimeLeft, timer]);
 
+  const handleSettingsClick = () => {
+    setShowSettings(!showSettings);
+  };
+
   return (
     <div>
       <CustomDrawer />
@@ -104,9 +113,13 @@ function TimerPage() {
 
         }}
       >
+        <Button edge="end" color="primary" onClick={handleSettingsClick}>
+          <SettingsApplicationsIcon />
+        </Button>
         <Typography variant="h3" gutterBottom>
           Timer
         </Typography>
+
         <Typography variant="h5" gutterBottom>
           {timerText}
         </Typography>
@@ -134,6 +147,17 @@ function TimerPage() {
             Pause
           </Button>
         </div>
+        {showSettings
+        && (
+        <TimerSettings
+          rounds={rounds}
+          setRounds={setRounds}
+          focusTime={focusTime}
+          setFocusTime={setFocusTime}
+          breakTime={breakTime}
+          setBreakTime={setBreakTime}
+        />
+        )}
       </Box>
     </div>
   );
