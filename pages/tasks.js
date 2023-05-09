@@ -2,7 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { useRouter } from 'next/router';
 import jwt from 'jsonwebtoken';
 import {
-  Button, Checkbox, TextField, List, ListItem, ListItemText, ListItemSecondaryAction, IconButton, Typography,
+  Button, Checkbox, TextField, LinearProgress, List, ListItem, ListItemText, ListItemSecondaryAction, IconButton, Typography,
 } from '@mui/material';
 import DeleteIcon from '@mui/icons-material/Delete';
 import EventIcon from '@mui/icons-material/Event';
@@ -132,6 +132,18 @@ function TasksPage() {
 
   return (
     <div>
+      <LinearProgress
+        variant="determinate"
+        value={100}
+        sx={{
+          maxWidth: '600px',
+          margin: 'auto',
+          marginTop: 1,
+          '& .MuiLinearProgress-bar': {
+            backgroundColor: '#494368',
+          },
+        }}
+      />
       <Typography variant="h4" component="h1" gutterBottom>My tasks</Typography>
       <form
         onSubmit={handleNewTask}

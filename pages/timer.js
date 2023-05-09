@@ -3,6 +3,8 @@ import Box from '@mui/material/Box';
 import Button from '@mui/material/Button';
 import TextField from '@mui/material/TextField';
 import Typography from '@mui/material/Typography';
+import LinearProgress from '@mui/material/LinearProgress';
+import CircularProgress from '@mui/material/CircularProgress';
 import { useRouter } from 'next/router';
 import SettingsApplicationsIcon from '@mui/icons-material/SettingsApplications';
 import TimerSettings from '../components/timerSettings';
@@ -21,7 +23,7 @@ function TimerPage() {
   const [timerText, setTimerText] = useState(''); // text to display on the timer
   const [timerColor, setTimerColor] = useState(''); // color of the timer text
   const [sessionComplete, setSessionComplete] = useState(false); // session complete flag
-
+  const [timePercent, setTimePercent] = useState(0); // percent of time gone in the timer
   const [showSettings, setShowSettings] = useState(false);
 
   const [token, setToken] = useState(null);
@@ -45,6 +47,7 @@ function TimerPage() {
     setFocusTimeLeft(focusTime * 60);
     setBreakTimeLeft(breakTime * 60);
     setRoundsLeft(rounds);
+    setTimePercent(0);
   }, [focusTime, breakTime, rounds]);
 
   useEffect(() => {
@@ -52,8 +55,10 @@ function TimerPage() {
       const timerInterval = setInterval(() => {
         if (timerMode === 'focus') {
           setFocusTimeLeft((prevFocusTimeLeft) => prevFocusTimeLeft - 1);
+          setTimePercent((prevTimePercent) => prevTimePercent + (100 / (focusTime * 60)));
         } else {
           setBreakTimeLeft((prevBreakTimeLeft) => prevBreakTimeLeft - 1);
+          setTimePercent((prevTimePercent) => prevTimePercent + (100 / (breakTime * 60)));
         }
 
         if (timerMode === 'focus' && focusTimeLeft === 0) {
@@ -95,26 +100,38 @@ function TimerPage() {
 
   return (
     <div>
+      <LinearProgress
+        variant="determinate"
+        value={timePercent}
+        sx={{
+          maxWidth: '600px',
+          margin: 'auto',
+          marginTop: 1,
+          backgroundColor: '#e0e0e0',
+          '& .MuiLinearProgress-bar': {
+            backgroundColor: '#494368',
+          },
+        }}
+      />
       <Box
         sx={{
           display: 'flex',
           flexDirection: 'column',
+          maxWidth: '450px',
+          maxHeight: '250px',
           alignItems: 'center',
           justifyContent: 'center',
-          backgroundColor: '#f5f5f5',
-          width: '50%',
-          height: '50%',
+          backgroundColor: 'rgba(255, 255, 255, 0.5)',
           borderRadius: '10px',
-          boxShadow: 3,
           padding: '20px',
           margin: 'auto',
-
+          marginTop: '20px',
         }}
       >
         <Button edge="end" color="primary" onClick={handleSettingsClick}>
           <SettingsApplicationsIcon />
         </Button>
-        <Typography variant="h3" gutterBottom>
+        <Typography variant="h3" color="black" gutterBottom>
           Timer
         </Typography>
 

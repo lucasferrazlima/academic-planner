@@ -16,7 +16,7 @@ mongoose.connect(process.env.MONGO_URL)
   .catch((error) => console.log('Error connecting to MongoDB:', error.message));
 
 app.use(express.json());
-app.use(express.static('build'));
+app.use(express.static('public'));
 app.use(cors());
 
 app.use('/api/login', loginRouter); // login route does not require jwtMiddleware

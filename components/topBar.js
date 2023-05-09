@@ -11,7 +11,6 @@ import Avatar from '@mui/material/Avatar';
 import Button from '@mui/material/Button';
 import Tooltip from '@mui/material/Tooltip';
 import MenuItem from '@mui/material/MenuItem';
-import AdbIcon from '@mui/icons-material/Adb';
 
 const pages = ['Tasks', 'Timer'];
 const settings = ['Logout'];
@@ -38,28 +37,20 @@ function ResponsiveAppBar() {
   return (
     <AppBar
       position="static"
-      sx={{ backgroundColor: '#FBEAAB', maxWidth: '700px', margin: '0 auto' }}
+      elevation={0}
+      sx={{ backgroundColor: '#FBEAAB', maxWidth: '650px', margin: '0 auto' }}
     >
-      <Container maxWidth="l">
+      <Container maxWidth="xl">
         <Toolbar disableGutters>
-          <Typography
-            variant="h6"
-            noWrap
-            component="a"
-            href="/"
-            sx={{
-              mr: 2,
-              display: { xs: 'none', md: 'flex' },
-              fontFamily: 'monospace',
-              fontWeight: 700,
-              letterSpacing: '.3rem',
-              color: '#454545',
-              textDecoration: 'none',
-            }}
-          >
-            LOGO
-          </Typography>
-
+          <Box sx={{ display: { xs: 'none', md: 'flex' } }}>
+            <img
+              src="./images/logo.svg"
+              alt="Logo"
+              style={{
+                maxWidth: 180, marginRight: 30,
+              }}
+            />
+          </Box>
           <Box sx={{ flexGrow: 1, display: { xs: 'flex', md: 'none' } }}>
             <IconButton
               size="large"
@@ -96,45 +87,39 @@ function ResponsiveAppBar() {
               ))}
             </Menu>
           </Box>
-          <AdbIcon sx={{ display: { xs: 'flex', md: 'none' }, mr: 1 }} />
-          <Typography
-            variant="h5"
-            noWrap
-            component="a"
-            href=""
-            sx={{
-              mr: 2,
-              display: { xs: 'flex', md: 'none' },
-              flexGrow: 1,
-              fontFamily: 'monospace',
-              fontWeight: 700,
-              letterSpacing: '.3rem',
-              color: '#454545',
-              textDecoration: 'none',
-            }}
+          <Box sx={{ display: { xs: 'flex', md: 'none' }, flexGrow: 1 }}>
+            <img
+              src="./images/logo.svg"
+              alt="Logo"
+              style={{
+                maxWidth: 125, marginRight: 30,
+              }}
+            />
+          </Box>
+          <Box sx={{
+            flexGrow: 1, gap: 1, display: { xs: 'none', md: 'flex' }, justifyContent: 'flex-end', alignItems: 'center', marginRight: 3,
+          }}
           >
-            LOGO
-          </Typography>
-          <Box sx={{ flexGrow: 1, display: { xs: 'none', md: 'flex' } }}>
             {pages.map((page) => (
               <Button
                 key={page}
                 onClick={handleCloseNavMenu}
-                sx={{ my: 2, color: '#454545', display: 'block' }}
+                sx={{
+                  my: 2, color: '#454545', display: 'block', textTransform: 'none', padding: '0', fontSize: '16px', backgroundColor: 'rgba(255, 255, 255, 0.5)',
+                }}
               >
                 {page}
               </Button>
             ))}
           </Box>
-
           <Box sx={{ flexGrow: 0 }}>
-            <Tooltip title="Open settings">
+            <Tooltip title="Account">
               <IconButton onClick={handleOpenUserMenu} sx={{ p: 0 }}>
-                <Avatar alt="Remy Sharp" src="/static/images/avatar/2.jpg" />
+                <Avatar />
               </IconButton>
             </Tooltip>
             <Menu
-              sx={{ mt: '45px' }}
+              sx={{ mt: '45px', marginLeft: 'auto' }}
               id="menu-appbar"
               anchorEl={anchorElUser}
               anchorOrigin={{
