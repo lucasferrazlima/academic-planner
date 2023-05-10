@@ -17,7 +17,6 @@ module.exports = {
     'react',
   ],
   rules: {
-
     'react/jsx-filename-extension': [
       1,
       {
@@ -29,5 +28,6 @@ module.exports = {
     ],
     'react/jsx-props-no-spreading': 'off',
     'react/prop-types': 'off',
+    'no-nested-ternary': 'off',
   },
 };

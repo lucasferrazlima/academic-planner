@@ -6,7 +6,7 @@ import Typography from '@mui/material/Typography';
 import LinearProgress from '@mui/material/LinearProgress';
 import CircularProgress from '@mui/material/CircularProgress';
 import { useRouter } from 'next/router';
-import SettingsApplicationsIcon from '@mui/icons-material/SettingsApplications';
+import SettingsIcon from '@mui/icons-material/Settings';
 import TimerSettings from '../components/timerSettings';
 
 function TimerPage() {
@@ -41,6 +41,20 @@ function TimerPage() {
     setTimerOn(false);
   };
 
+  // handle when timer is reset
+  const handleReset = () => {
+    setTimerOn(false);
+    setTimerMode('focus');
+    setTimerColor('green');
+    setTimerText('Get to work!');
+    setTimer(focusTime * 60);
+    setFocusTimeLeft(focusTime * 60);
+    setBreakTimeLeft(breakTime * 60);
+    setRoundsLeft(rounds);
+    setTimePercent(0);
+    setSessionComplete(false);
+  };
+
   // handle when values are changed in settings
   useEffect(() => {
     setTimer(focusTime * 60);
@@ -66,14 +80,21 @@ function TimerPage() {
           setTimerColor('red');
           setTimerText('Break Time!');
           setBreakTimeLeft(breakTime * 60);
+          setRoundsLeft((prevRoundsLeft) => prevRoundsLeft - 1);
+          setTimePercent(0);
         } else if (timerMode === 'break' && breakTimeLeft === 0) {
           setTimerMode('focus');
           setTimerColor('green');
           setTimerText('Focus Time!');
-          setRoundsLeft((prevRoundsLeft) => prevRoundsLeft - 1);
           setFocusTimeLeft(focusTime * 60);
+          setTimePercent(0);
         }
       }, 1000);
+
+      if (roundsLeft === 0) {
+        setSessionComplete(true);
+        handleReset();
+      }
 
       return () => clearInterval(timerInterval);
     }
@@ -83,10 +104,11 @@ function TimerPage() {
     const minutes = Math.floor(timeSeconds / 60);
     const seconds = timeSeconds % 60;
 
-    return `${minutes.toString().padStart(2, '0')} : ${seconds.toString().padStart(2, '0')}`;
+    return `${minutes.toString().padStart(2, '0')}:${seconds.toString().padStart(2, '0')}`;
   };
 
   useEffect(() => {
+    setTimerColor(!timerOn ? '#494368' : (timerMode === 'focus' ? '#DF2935' : '#3692D3'));
     if (timerMode === 'focus') {
       setTimerText(formatTime(focusTimeLeft));
     } else {
@@ -128,36 +150,45 @@ function TimerPage() {
           marginTop: '20px',
         }}
       >
-        <Button edge="end" color="primary" onClick={handleSettingsClick}>
-          <SettingsApplicationsIcon />
-        </Button>
-        <Typography variant="h3" color="black" gutterBottom>
-          Timer
-        </Typography>
 
-        <Typography variant="h5" gutterBottom>
+        <Typography variant="h6" gutterBottom fontFamily="Konkhmer Sleokchher" sx={{ color: timerColor }}>
+          {!timerOn ? 'Start your session' : (timerMode === 'focus' ? 'Focus Time!' : 'Take a Break!')}
+        </Typography>
+        <Typography
+          variant="h1"
+          color="#494368"
+          fontFamily="Konkhmer Sleokchher"
+        >
           {timerText}
         </Typography>
-        <Typography variant="h5" gutterBottom>
-          {timerMode === 'focus' ? 'Focus Time!' : 'Break Time!'}
-        </Typography>
-        <Typography variant="h5" gutterBottom>
-          {roundsLeft === 0 ? 'Session Complete!' : `${roundsLeft} Rounds Left`}
+        <Typography variant="h7" gutterBottom>
+          {roundsLeft === 1 ? `${roundsLeft} round left in session` : `${roundsLeft} rounds left in session`}
         </Typography>
         <div style={{ display: 'flex', flexDirection: 'row', gap: '10px' }}>
           <Button
             variant="contained"
-            color="primary"
             onClick={handleStart}
             disabled={timerOn || sessionComplete}
+            size="large"
+            sx={{
+              backgroundColor: '#494368',
+              '&:hover': {
+                backgroundColor: '#332f49',
+              },
+            }}
           >
             Start
           </Button>
           <Button
             variant="contained"
-            color="primary"
             onClick={handlePause}
             disabled={!timerOn || sessionComplete}
+            sx={{
+              backgroundColor: '#494368',
+              '&:hover': {
+                backgroundColor: '#332f49',
+              },
+            }}
           >
             Pause
           </Button>
@@ -173,7 +204,47 @@ function TimerPage() {
           setBreakTime={setBreakTime}
         />
         )}
+        <Button
+          edge="end"
+          color="primary"
+          onClick={handleSettingsClick}
+        >
+          Settings
+        </Button>
       </Box>
+
+      <div style={{
+        marginTop: '20px', backgroundColor: 'rgba(255, 255, 255, 0.5)', marginLeft: '-8px', marginRight: '-8px', marginBottom: '-8px',
+      }}
+      >
+
+        <Typography
+          variant="body1"
+          fontFamily="Poppins"
+          sx={{
+            color: '#494368', textAlign: 'center', maxWidth: '550px', margin: 'auto', marginTop: '40px', padding: '20px',
+          }}
+        >
+          Our timer is based on the
+          {' '}
+          <span style={{ color: '#332f49', fontWeight: 'bold' }}>Pomodoro Technique</span>
+          , a time management method developed by Francesco Cirillo in the late 1980s.
+          <br />
+          <br />
+          The technique involves breaking work into intervals, usually 25 minutes in length, separated by short breaks.
+          <br />
+          <br />
+          Each interval is known as a "
+          <span style={{ color: '#332f49', fontWeight: 'bold' }}>pomodoro</span>
+          ," the plural in English of the Italian word pomodoro (tomato), after the tomato-shaped kitchen timer that Cirillo used as a university student.
+          <br />
+          <br />
+          The method is based on the idea that frequent breaks can improve mental agility. It aims to reduce the impact of internal and external interruptions on focus and flow.
+          <br />
+          <br />
+          The Pomodoro Technique has been shown to increase productivity and reduce burnout. Give it a try and see how it works for you!
+        </Typography>
+      </div>
     </div>
   );
 }

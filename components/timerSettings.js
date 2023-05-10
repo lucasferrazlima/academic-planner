@@ -25,11 +25,10 @@ function TimerSettings({
       alignItems: 'center',
       zIndex: 1,
       position: 'absolute',
-      top: '80%',
-      left: '50%',
-      transform: 'translate(-50%, -50%)',
+      top: { xs: '100px', md: '150px' },
       padding: '20px',
       backgroundColor: '#f5f5f5',
+      gap: '20px',
     }}
     >
       <Typography
