@@ -1,4 +1,4 @@
-import * as React from 'react';
+import React, { useState } from 'react';
 import AppBar from '@mui/material/AppBar';
 import Box from '@mui/material/Box';
 import Toolbar from '@mui/material/Toolbar';
@@ -16,8 +16,8 @@ const pages = ['Tasks', 'Timer'];
 const settings = ['Logout'];
 
 function ResponsiveAppBar() {
-  const [anchorElNav, setAnchorElNav] = React.useState(null);
-  const [anchorElUser, setAnchorElUser] = React.useState(null);
+  const [anchorElNav, setAnchorElNav] = useState(null);
+  const [anchorElUser, setAnchorElUser] = useState(null);
 
   const handleOpenNavMenu = (event) => {
     setAnchorElNav(event.currentTarget);
@@ -105,7 +105,7 @@ function ResponsiveAppBar() {
                 key={page}
                 onClick={handleCloseNavMenu}
                 sx={{
-                  my: 2, color: '#454545', display: 'block', textTransform: 'none', padding: '0', fontSize: '16px', backgroundColor: 'rgba(255, 255, 255, 0.5)',
+                  my: 2, fontFamily: 'Poppins', color: '#454545', display: 'block', textTransform: 'none', padding: '0', fontSize: '16px', backgroundColor: 'rgba(255, 255, 255, 0.5)',
                 }}
               >
                 {page}

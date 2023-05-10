@@ -3,6 +3,9 @@
 
 body {
     min-height: 100vh;
+    margin: 0;
+    padding: 0;
+    border: 0;
     background-color: #FBEAAB;
     font-family: 'Poppins', sans-serif !important;
 }

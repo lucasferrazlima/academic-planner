@@ -25,6 +25,7 @@ function TimerPage() {
   const [sessionComplete, setSessionComplete] = useState(false); // session complete flag
   const [timePercent, setTimePercent] = useState(0); // percent of time gone in the timer
   const [showSettings, setShowSettings] = useState(false);
+  const [isOpen, setIsOpen] = useState(false);
 
   const [token, setToken] = useState(null);
 
@@ -39,6 +40,15 @@ function TimerPage() {
 
   const handlePause = () => {
     setTimerOn(false);
+  };
+
+  const handleOpen = () => {
+    setIsOpen(true);
+    setShowSettings(true);
+  };
+
+  const handleClose = () => {
+    setIsOpen(false);
   };
 
   // handle when timer is reset
@@ -116,10 +126,6 @@ function TimerPage() {
     }
   }, [timerOn, timerMode, focusTimeLeft, breakTimeLeft, timer]);
 
-  const handleSettingsClick = () => {
-    setShowSettings(!showSettings);
-  };
-
   return (
     <div>
       <LinearProgress
@@ -139,6 +145,7 @@ function TimerPage() {
         sx={{
           display: 'flex',
           flexDirection: 'column',
+          position: 'relative',
           maxWidth: '450px',
           maxHeight: '250px',
           alignItems: 'center',
@@ -147,10 +154,24 @@ function TimerPage() {
           borderRadius: '10px',
           padding: '20px',
           margin: 'auto',
-          marginTop: '20px',
+          marginTop: '40px',
         }}
       >
-
+        <Button
+          onClick={handleOpen}
+          disableRipple
+          sx={{
+            position: 'absolute',
+            top: '10px',
+            right: '0px',
+            color: '#494368',
+            '&:hover': {
+              backgroundColor: 'transparent',
+            },
+          }}
+        >
+          <SettingsIcon />
+        </Button>
         <Typography variant="h6" gutterBottom fontFamily="Konkhmer Sleokchher" sx={{ color: timerColor }}>
           {!timerOn ? 'Start your session' : (timerMode === 'focus' ? 'Focus Time!' : 'Take a Break!')}
         </Typography>
@@ -195,34 +216,28 @@ function TimerPage() {
         </div>
         {showSettings
         && (
-        <TimerSettings
-          rounds={rounds}
-          setRounds={setRounds}
-          focusTime={focusTime}
-          setFocusTime={setFocusTime}
-          breakTime={breakTime}
-          setBreakTime={setBreakTime}
-        />
+          <TimerSettings
+            rounds={rounds}
+            setRounds={setRounds}
+            focusTime={focusTime}
+            setFocusTime={setFocusTime}
+            breakTime={breakTime}
+            setBreakTime={setBreakTime}
+            isOpen={isOpen}
+            onClose={handleClose}
+          />
         )}
-        <Button
-          edge="end"
-          color="primary"
-          onClick={handleSettingsClick}
-        >
-          Settings
-        </Button>
-      </Box>
 
+      </Box>
       <div style={{
-        marginTop: '20px', backgroundColor: 'rgba(255, 255, 255, 0.5)', marginLeft: '-8px', marginRight: '-8px', marginBottom: '-8px',
+        marginTop: '20px', backgroundColor: 'rgba(255, 255, 255, 0.5)',
       }}
       >
-
         <Typography
           variant="body1"
           fontFamily="Poppins"
           sx={{
-            color: '#494368', textAlign: 'center', maxWidth: '550px', margin: 'auto', marginTop: '40px', padding: '20px',
+            color: '#494368', textAlign: 'center', maxWidth: '550px', margin: 'auto', marginTop: '40px', padding: '40px',
           }}
         >
           Our timer is based on the
