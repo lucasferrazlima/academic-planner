@@ -11,6 +11,7 @@ import Avatar from '@mui/material/Avatar';
 import Button from '@mui/material/Button';
 import Tooltip from '@mui/material/Tooltip';
 import MenuItem from '@mui/material/MenuItem';
+import { useRouter } from 'next/router';
 
 const pages = ['Tasks', 'Timer'];
 const settings = ['Logout'];
@@ -18,6 +19,13 @@ const settings = ['Logout'];
 function ResponsiveAppBar() {
   const [anchorElNav, setAnchorElNav] = useState(null);
   const [anchorElUser, setAnchorElUser] = useState(null);
+
+  const router = useRouter();
+
+  const handlePageChange = (page) => {
+    handleCloseNavMenu();
+    router.push(`/${page.toLowerCase()}`);
+  };
 
   const handleOpenNavMenu = (event) => {
     setAnchorElNav(event.currentTarget);
@@ -81,7 +89,7 @@ function ResponsiveAppBar() {
               }}
             >
               {pages.map((page) => (
-                <MenuItem key={page} onClick={handleCloseNavMenu}>
+                <MenuItem key={page} onClick={() => handlePageChange(page)}>
                   <Typography textAlign="center" sx={{ color: '#454545' }}>{page}</Typography>
                 </MenuItem>
               ))}
@@ -103,7 +111,7 @@ function ResponsiveAppBar() {
             {pages.map((page) => (
               <Button
                 key={page}
-                onClick={handleCloseNavMenu}
+                onClick={() => handlePageChange(page)}
                 sx={{
                   my: 2, fontFamily: 'Poppins', color: '#454545', display: 'block', textTransform: 'none', padding: '0', fontSize: '16px', backgroundColor: 'rgba(255, 255, 255, 0.5)',
                 }}
