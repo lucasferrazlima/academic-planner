@@ -2,11 +2,8 @@ import { useRouter } from 'next/router';
 import React, { useState, useEffect } from 'react';
 import jwt from 'jsonwebtoken';
 import {
-  Button, Box, TextField, List, ListItem, ListItemText, ListItemSecondaryAction, IconButton, Typography,
+  Button, Box, TextField, Typography,
 } from '@mui/material';
-import DeleteIcon from '@mui/icons-material/Delete';
-import EventIcon from '@mui/icons-material/Event';
-import EditIcon from '@mui/icons-material/Edit';
 
 const baseUrl = 'http://localhost:3001/api';
 
@@ -46,12 +43,27 @@ function TaskPage() {
   };
 
   return (
-    <Box>
-      <Typography variant="h4" component="h1" gutterBottom>My tasks</Typography>
+    <Box
+      maxWidth="550px"
+      margin="auto"
+      sx={{
+        display: 'flex',
+        flexDirection: 'column',
+        position: 'relative',
+        alignItems: 'center',
+        justifyContent: 'center',
+        backgroundColor: 'rgba(255, 255, 255, 0.5)',
+        borderRadius: '10px',
+        padding: '20px 40px 20px 40px',
+        margin: 'auto',
+      }}
+
+    >
+      <Typography variant="h4" component="h1" gutterBottom>Edit Task</Typography>
       <form
         onSubmit={handleEditTask}
         style={{
-          display: 'flex', flexDirection: 'column', gap: '5px', maxWidth: '80%', margin: '0 auto',
+          display: 'flex', flexDirection: 'column', gap: '5px', width: '100%',
         }}
       >
         <TextField
@@ -80,7 +92,24 @@ function TaskPage() {
           size="small"
           InputLabelProps={{ shrink: true }}
         />
-        <Button type="submit" color="primary" variant="contained" sx={{ mt: 1 }}>Create Task</Button>
+        <Button
+          type="submit"
+          variant="contained"
+          sx={{
+            mt: 1,
+            width: { xs: '60%', md: '40%' },
+            marginLeft: 'auto',
+            marginRight: 'auto',
+            marginTop: '15px',
+            backgroundColor: '#494368',
+            '&:hover': {
+              backgroundColor: '#332f49',
+            },
+          }}
+        >
+          Create Task
+
+        </Button>
       </form>
     </Box>
   );

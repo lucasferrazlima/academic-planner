@@ -20,6 +20,9 @@ function TasksPage() {
   const [showForm, setShowForm] = useState(false);
   const [showAddButton, setShowAddButton] = useState(true);
 
+  // State to hold selected task info (for edit task page)
+  const [selectedTask, setSelectedTask] = useState(null);
+
   useEffect(() => {
     const tokenUser = localStorage.getItem('token');
     setToken(tokenUser);
@@ -95,6 +98,8 @@ function TasksPage() {
   };
 
   const handleEditTask = (taskId) => {
+    const task = tasks.find((task) => task._id === taskId);
+    setSelectedTask(task);
     router.push(`/tasks/${taskId}`);
   };
 

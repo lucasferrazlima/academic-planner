@@ -52,7 +52,7 @@ function LoginPage() {
           textAlign: 'center',
         }}
       />
-      <h1>Login</h1>
+      <h1>Registration</h1>
       <form
         onSubmit={handleLogin}
         style={{
@@ -77,7 +77,7 @@ function LoginPage() {
           variant="contained"
           sx={{
             mt: 1,
-            width: { xs: '60%', md: '40%' },
+            width: { xs: '60%', md: '50%' },
             marginLeft: 'auto',
             marginRight: 'auto',
             marginTop: '15px',
@@ -87,7 +87,7 @@ function LoginPage() {
             },
           }}
         >
-          Login
+          Register
         </Button>
       </form>
     </Box>
