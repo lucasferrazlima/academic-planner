@@ -2,7 +2,7 @@ import { useRouter } from 'next/router';
 import React, { useState, useEffect } from 'react';
 import jwt from 'jsonwebtoken';
 import {
-  Button, Checkbox, TextField, List, ListItem, ListItemText, ListItemSecondaryAction, IconButton, Typography,
+  Button, Box, TextField, List, ListItem, ListItemText, ListItemSecondaryAction, IconButton, Typography,
 } from '@mui/material';
 import DeleteIcon from '@mui/icons-material/Delete';
 import EventIcon from '@mui/icons-material/Event';
@@ -46,7 +46,7 @@ function TaskPage() {
   };
 
   return (
-    <div>
+    <Box>
       <Typography variant="h4" component="h1" gutterBottom>My tasks</Typography>
       <form
         onSubmit={handleEditTask}
@@ -82,7 +82,7 @@ function TaskPage() {
         />
         <Button type="submit" color="primary" variant="contained" sx={{ mt: 1 }}>Create Task</Button>
       </form>
-    </div>
+    </Box>
   );
 }
 

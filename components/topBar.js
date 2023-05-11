@@ -113,7 +113,7 @@ function ResponsiveAppBar() {
                 key={page}
                 onClick={() => handlePageChange(page)}
                 sx={{
-                  my: 2, fontFamily: 'Poppins', color: '#454545', display: 'block', textTransform: 'none', padding: '0', fontSize: '16px', backgroundColor: 'rgba(255, 255, 255, 0.5)',
+                  my: 2, color: '#454545', display: 'block', textTransform: 'none', padding: '0', fontSize: '16px', backgroundColor: 'rgba(255, 255, 255, 0.5)',
                 }}
               >
                 {page}
