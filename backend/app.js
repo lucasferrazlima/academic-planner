@@ -1,9 +1,10 @@
 const express = require('express');
-const jwtMiddleware = require('./utils/jwtMiddleware');
+
 const cors = require('cors');
 
 const app = express();
 const mongoose = require('mongoose');
+const jwtMiddleware = require('./utils/jwtMiddleware');
 
 const tasksRouter = require('./controllers/tasks');
 const usersRouter = require('./controllers/users');
@@ -11,9 +12,7 @@ const loginRouter = require('./controllers/login');
 
 mongoose.set('strictQuery', false);
 
-mongoose.connect(process.env.MONGO_URL)
-  .then(() => console.log('Connected to MongoDB'))
-  .catch((error) => console.log('Error connecting to MongoDB:', error.message));
+mongoose.connect(process.env.MONGO_URL);
 
 app.use(express.json());
 app.use(express.static('public'));

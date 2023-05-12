@@ -2,7 +2,16 @@ import React, { useState, useEffect } from 'react';
 import { useRouter } from 'next/router';
 import jwt from 'jsonwebtoken';
 import {
-  Button, Box, Checkbox, TextField, LinearProgress, List, ListItem, ListItemText, ListItemSecondaryAction, IconButton, Typography,
+  Button, Box,
+  Checkbox,
+  TextField,
+  LinearProgress,
+  List,
+  ListItem,
+  ListItemText,
+  ListItemSecondaryAction,
+  IconButton,
+  Typography,
 } from '@mui/material';
 import DeleteIcon from '@mui/icons-material/Delete';
 import EventIcon from '@mui/icons-material/Event';
@@ -21,13 +30,9 @@ function TasksPage() {
   const [showForm, setShowForm] = useState(false);
   const [showAddButton, setShowAddButton] = useState(true);
 
-  // State to hold selected task info (for edit task page)
-  const [selectedTask, setSelectedTask] = useState(null);
-
   useEffect(() => {
     const tokenUser = localStorage.getItem('token');
     setToken(tokenUser);
-    const user = jwt.decode(tokenUser);
   }, []);
 
   useEffect(() => {
@@ -40,7 +45,6 @@ function TasksPage() {
           },
         });
         const data = await res.json();
-        console.log(data);
         const incompleteTasks = data.filter((task) => !task.completed);
         const completeTasks = data.filter((task) => task.completed);
         setTasks(incompleteTasks);
@@ -97,7 +101,6 @@ function TasksPage() {
 
   const handleEditTask = (taskId) => {
     const task = tasks.find((task) => task._id === taskId);
-    setSelectedTask(task);
     router.push(`/tasks/${taskId}`);
   };
 

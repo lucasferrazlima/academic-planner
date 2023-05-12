@@ -22,11 +22,6 @@ function ResponsiveAppBar() {
 
   const router = useRouter();
 
-  const handlePageChange = (page) => {
-    handleCloseNavMenu();
-    router.push(`/${page.toLowerCase()}`);
-  };
-
   const handleOpenNavMenu = (event) => {
     setAnchorElNav(event.currentTarget);
   };
@@ -40,6 +35,11 @@ function ResponsiveAppBar() {
 
   const handleCloseUserMenu = () => {
     setAnchorElUser(null);
+  };
+
+  const handlePageChange = (page) => {
+    handleCloseNavMenu();
+    router.push(`/${page.toLowerCase()}`);
   };
 
   const handleLogout = () => {
