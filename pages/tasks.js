@@ -61,8 +61,6 @@ function TasksPage() {
       dueDate: e.target.dueDate.value,
     };
 
-    console.log(newTask);
-
     try {
       const res = await fetch(`${baseUrl}/tasks`, {
         method: 'POST',
@@ -73,7 +71,6 @@ function TasksPage() {
         body: JSON.stringify(newTask),
       });
       const data = await res.json();
-      console.log(data);
       setTasks([...tasks, data]);
     } catch (error) {
       console.error(error);
