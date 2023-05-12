@@ -2,7 +2,7 @@
 
 <p align="center">
   <a href="#tech-stack">Tech Stack</a> •
-  <a href="#functionality">Functionality</a> •
+  <a href="#functionality">Functionality</a>
 </p>
 
 <p align="center">
