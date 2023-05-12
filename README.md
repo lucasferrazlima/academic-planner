@@ -13,7 +13,10 @@
   Scholarly is a web application designed to help students manage their academic schedule. It allows users to create and manage their tasks, assignments, and exams, as well as to maintain focused study sessions through a timer based on the Pomodoro Technique.
 </p>
 
-<img alt="Scholarly timer screenshot" src="./public/images/screenshot2.png" >
+<div style="overflow: auto;">
+  <img alt="Scholarly tasks screenshot" src="./public/images/screenshot2.png" style="float:left;margin-right:10px;">
+  <img alt="Scholarly timer screenshot" src="./public/images/screenshot1.png" style="float:left;">
+</div>
 
 ## Tech Stack
 
