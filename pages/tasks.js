@@ -9,6 +9,7 @@ import EventIcon from '@mui/icons-material/Event';
 import EditIcon from '@mui/icons-material/Edit';
 import AddCircleIcon from '@mui/icons-material/AddCircle';
 import CloseIcon from '@mui/icons-material/Close';
+import DOMPurify from 'dompurify';
 
 const baseUrl = 'http://localhost:3001/api';
 
@@ -55,8 +56,8 @@ function TasksPage() {
   const handleNewTask = async (e) => {
     e.preventDefault(); // prevent page refresh
     const newTask = {
-      title: e.target.title.value,
-      description: e.target.description.value,
+      title: DOMPurify.sanitize(e.target.title.value),
+      description: DOMPurify.sanitize(e.target.description.value),
       dueDate: e.target.dueDate.value,
     };
 

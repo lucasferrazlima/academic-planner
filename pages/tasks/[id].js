@@ -4,6 +4,7 @@ import jwt from 'jsonwebtoken';
 import {
   Button, Box, TextField, Typography,
 } from '@mui/material';
+import DOMPurify from 'dompurify';
 
 const baseUrl = 'http://localhost:3001/api';
 
@@ -22,8 +23,8 @@ function TaskPage() {
   const handleEditTask = async (e) => {
     e.preventDefault();
     const editedTask = {
-      title: e.target.title.value,
-      description: e.target.description.value,
+      title: DOMPurify.sanitize(e.target.title.value),
+      description: DOMPurify.sanitize(e.target.description.value),
       dueDate: e.target.dueDate.value,
     };
     try {
@@ -107,7 +108,7 @@ function TaskPage() {
             },
           }}
         >
-          Create Task
+          Edit Task
 
         </Button>
       </form>

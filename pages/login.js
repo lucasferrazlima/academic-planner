@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import router from 'next/router';
 import { Box, Button } from '@mui/material';
+import DOMPurify from 'dompurify';
 
 const baseUrl = 'http://localhost:3001/api';
 
@@ -13,7 +14,10 @@ function LoginPage() {
     try {
       const res = await fetch(`${baseUrl}/login`, {
         method: 'POST',
-        body: JSON.stringify({ username, password }),
+        body: JSON.stringify({
+          username: DOMPurify.sanitize(username),
+          password: DOMPurify.sanitize(password),
+        }),
         headers: { 'Content-Type': 'application/json' },
       });
       const data = await res.json();
