@@ -7,19 +7,23 @@ const baseUrl = 'http://localhost:3001/api';
 function LoginPage() {
   const [username, setUsername] = useState('');
   const [password, setPassword] = useState('');
+  const [name, setName] = useState('');
+  const [email, setEmail] = useState('');
 
-  const handleLogin = async (e) => {
+  const handleRegister = async (e) => {
     e.preventDefault();
     try {
-      const res = await fetch(`${baseUrl}/login`, {
+      const res = await fetch(`${baseUrl}/users`, {
         method: 'POST',
-        body: JSON.stringify({ username, password }),
+        body: JSON.stringify({
+          name, username, email, password,
+        }),
         headers: { 'Content-Type': 'application/json' },
       });
       const data = await res.json();
       localStorage.setItem('token', data.token);
 
-      if (res.status === 200) {
+      if (res.status === 201) {
         router.push('/tasks');
       }
     } catch (error) {
@@ -54,7 +58,7 @@ function LoginPage() {
       />
       <h1>Registration</h1>
       <form
-        onSubmit={handleLogin}
+        onSubmit={handleRegister}
         style={{
           display: 'flex',
           flexDirection: 'column',
@@ -67,8 +71,12 @@ function LoginPage() {
           textAlign: 'center',
         }}
       >
+        <label htmlFor="name">Name</label>
+        <input type="text" id="name" name="name" value={name} onChange={(e) => setName(e.target.value)} />
         <label htmlFor="username">Username</label>
         <input type="text" id="username" name="username" value={username} onChange={(e) => setUsername(e.target.value)} />
+        <label htmlFor="email">Email</label>
+        <input type="email" id="email" name="email" value={email} onChange={(e) => setEmail(e.target.value)} />
         <label htmlFor="password">Password</label>
         <input type="password" id="password" name="password" value={password} onChange={(e) => setPassword(e.target.value)} />
         <Button

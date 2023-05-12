@@ -20,8 +20,8 @@ app.use(express.static('public'));
 app.use(cors());
 
 app.use('/api/login', loginRouter); // login route does not require jwtMiddleware
+app.use('/api/users', usersRouter); // user registration route does not require jwtMiddleware
 app.use(jwtMiddleware);
 app.use('/api/tasks', tasksRouter);
-app.use('/api/users', usersRouter);
 
 module.exports = app;
