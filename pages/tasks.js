@@ -20,7 +20,7 @@ import AddCircleIcon from '@mui/icons-material/AddCircle';
 import CloseIcon from '@mui/icons-material/Close';
 import DOMPurify from 'dompurify';
 
-const baseUrl = 'http://localhost:3001/api';
+const baseUrl = 'https://scholarly-backend.onrender.com/api';
 
 function TasksPage() {
   const [tasks, setTasks] = useState([]);

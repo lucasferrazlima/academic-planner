@@ -6,7 +6,7 @@ import {
 } from '@mui/material';
 import DOMPurify from 'dompurify';
 
-const baseUrl = 'http://localhost:3001/api';
+const baseUrl = 'https://scholarly-backend.onrender.com/api';
 
 function TaskPage() {
   const router = useRouter();
